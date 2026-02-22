@@ -1,5 +1,5 @@
 ### Student Finance Tracker
-1. Project Overview
+# Project Overview
 The Student Finance Tracker is a responsive web application designed to help students manage and monitor their daily expenses. Many students struggle to track where their money goes, especially with small daily purchases like food or transport. This app will allow users to record transactions, categorize them, and view summary statistics to better understand their spending habits.
 
 The application will be built using vanilla HTML, CSS, and JavaScript without any frameworks. It will focus on accessibility, responsive design, clean modular code, and proper input validation using regular expressions. All data will be stored locally in the browser using localStorage, so the user’s records persist across sessions.
@@ -12,7 +12,7 @@ A dashboard showing spending statistics
 A configurable spending cap with alerts
 JSON import and export functionality
 
-2. Data Model
+# Data Model
 Each transaction record will follow a structured object format to ensure consistency and validation.
 {
   id: "txn_001",
@@ -23,7 +23,7 @@ Each transaction record will follow a structured object format to ensure consist
   createdAt: "2025-09-29T10:15:00Z",
   updatedAt: "2025-09-29T10:15:00Z"
 }
-3. Regex Validation Plan
+# Regex Validation Plan
 1. Description Validation
 Must not contain leading or trailing spaces.
 Double spaces should be collapsed.
@@ -54,7 +54,7 @@ Sufficient color contrast for readability.
 A skip-to-content link for keyboard users.
 The goal is to ensure the app is fully usable without a mouse.
 
-5. Wireframe Sketch
+# Wireframe Sketch
 # HEADER (App Title)
 NAVIGATION (Dashboard | Transactions | Settings | About)
 MAIN
