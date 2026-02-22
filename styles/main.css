@@ -16,6 +16,14 @@
     background-color: #f4f6f8;
     margin: 0;
   }
+  body.dark {
+    background: #111;
+    color: #eee;
+  }
+  
+  body.dark table {
+    background: #222;
+  }
   
   .skip-link {
     position: absolute;
@@ -204,12 +212,4 @@
   stats p {
     background: #f0f4fa;
     border-left: 4px solid #003366;
-  }
-
-  .error {
-    color: red;
-    font-size: 0.85rem;
-    min-height: 18px; /* prevents layout shift */
-    display: block;
-    margin-bottom: 10px;
   }

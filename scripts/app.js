@@ -74,3 +74,6 @@ form.addEventListener("submit", function (e) {
 
   form.reset();
 });
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+  }

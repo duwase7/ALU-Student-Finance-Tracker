@@ -11,6 +11,19 @@ const capInput = document.getElementById("cap");
 const capStatusEl = document.getElementById("cap-status");
 const currencySelect = document.getElementById("currency-select");
 const formErrors = document.getElementById("form-errors");
+const toggle = document.getElementById("theme-toggle");
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  document.body.classList.add(savedTheme);
+}
+
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "");
+});
 
 
 export function highlight(text, re) {

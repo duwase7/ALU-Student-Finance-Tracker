@@ -39,3 +39,25 @@ export function importTransactions(file, callback) {
 
     reader.readAsText(file);
 }
+export function exportCSV(transactions) {
+    const headers = ["Description", "Amount", "Category", "Date"];
+  
+    const escape = (field) =>
+      `"${String(field).replace(/"/g, '""')}"`;
+  
+    const rows = transactions.map(t =>
+      [t.description, t.amount, t.category, t.date]
+        .map(escape)
+        .join(",")
+    );
+  
+    const csvContent = [headers.join(","), ...rows].join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "transactions.csv";
+    a.click();
+  }
