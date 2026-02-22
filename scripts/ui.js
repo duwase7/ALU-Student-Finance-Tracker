@@ -2,7 +2,7 @@ import { transactions, setTransactions, currency, setCurrency, loadTransactions,
 import { exportTransactions, importTransactions } from "./storage.js";
 
 const form = document.getElementById("transaction-form");
-const tableBody = document.querySelector("#transaction-table tbody");
+const tableBody = document.querySelector("#transactions-table tbody");
 const searchInput = document.getElementById("search");
 const totalCountEl = document.getElementById("total-count");
 const totalSumEl = document.getElementById("total-sum");
@@ -164,6 +164,13 @@ currencySelect.addEventListener("change", (e) => {
 
 capInput.addEventListener("input", updateStats);
 
-
 loadTransactions();
 renderTable();
+
+document.getElementById("clear-all").addEventListener("click", () => {
+    const confirmClear = confirm("Are you sure you want to delete all transactions?");
+    if (!confirmClear) return;
+  
+    setTransactions([]);
+    renderTable();
+  });

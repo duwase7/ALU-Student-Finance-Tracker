@@ -1,5 +1,5 @@
 export function validateDescription(desc) {
-    return /^\S(?:.*\S)?$/.test(desc); // no leading/trailing spaces
+    return /^[A-Za-z ]{3,}$/.test(desc.trim());
   }
   
   export function validateAmount(amount) {

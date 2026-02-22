@@ -40,6 +40,22 @@ amountInput.addEventListener("input", () => {
   }
 });
 
+categoryInput.addEventListener("input", () => {
+    if (!validateCategory(categoryInput.value)) {
+      categoryError.textContent = "Only letters allowed (no numbers).";
+    } else {
+      categoryError.textContent = "";
+    }
+  });
+  
+  dateInput.addEventListener("input", () => {
+    if (!validateDate(dateInput.value)) {
+      dateError.textContent = "Enter valid date (YYYY-MM-DD).";
+    } else {
+      dateError.textContent = "";
+    }
+  });
+
 form.addEventListener("submit", function (e) {
   e.preventDefault(); 
 
@@ -48,32 +64,66 @@ form.addEventListener("submit", function (e) {
   const category = categoryInput.value;
   const date = dateInput.value;
 
-  if (
-    !validateDescription(description) ||
-    hasDuplicateWords(description) ||
-    !validateAmount(amount) ||
-    !validateCategory(category) ||
-    !validateDate(date)
-  ) {
-    alert("Please fix validation errors.");
-    return;
+  let hasError = false;
+
+  if (!validateDescription(description)) {
+    descError.textContent = "Minimum 3 letters, no numbers.";
+    hasError = true;
   }
-
-  const tableBody = document.querySelector("tbody");
-
-  const row = document.createElement("tr");
-
-  row.innerHTML = `
-    <td>${description}</td>
-    <td>${amount}</td>
-    <td>${category}</td>
-    <td>${date}</td>
-  `;
-
-  tableBody.appendChild(row);
+  
+  if (hasDuplicateWords(description)) {
+    descError.textContent = "Duplicate consecutive words detected.";
+    hasError = true;
+  }
+  
+  if (!validateAmount(amount)) {
+    amountError.textContent = "Enter valid positive amount (max 2 decimals).";
+    hasError = true;
+  }
+  
+  if (!validateCategory(category)) {
+    categoryError.textContent = "Only letters allowed.";
+    hasError = true;
+  }
+  
+  if (!validateDate(date)) {
+    dateError.textContent = "Enter valid date.";
+    hasError = true;
+  }
+  
+  if (hasError) return;
 
   form.reset();
+
 });
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js");
+  }
+import { exportCSV } from "./storage.js";
+import { state } from "./state.js";
+
+document.getElementById("export-csv")
+  .addEventListener("click", () => {
+    exportCSV(state.transactions);
+  });
+
+  const toggle = document.getElementById("theme-toggle");
+
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  document.body.classList.add(savedTheme);
+}
+
+
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "");
+});
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.error("SW registration failed:", err));
   }
