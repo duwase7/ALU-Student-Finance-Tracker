@@ -284,3 +284,19 @@
   input:invalid {
     border-color: #e53935;
   }
+  #notes-section {
+    margin-top: 2rem;
+  }
+  
+  #transaction-notes {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    resize: vertical;
+  }
+
+  body.dark #transaction-notes {
+    background: #2a2a2a;
+    color: white;
+    border: 1px solid #444;
+  }

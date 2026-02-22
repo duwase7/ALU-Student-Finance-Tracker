@@ -1,5 +1,6 @@
 import { transactions, setTransactions, currency, setCurrency, loadTransactions, saveTransactions } from "./state.js";
 import { exportTransactions, importTransactions } from "./storage.js";
+let editingId = null;
 
 const form = document.getElementById("transaction-form");
 const tableBody = document.querySelector("#transactions-table tbody");
@@ -78,15 +79,32 @@ function renderTable(filterRegex = null) {
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-            <td>${highlight(t.description, filterRegex)}</td>
-            <td>${getCurrencySymbol(currency)}${t.amount.toFixed(2)}</td>
-            <td>${highlight(t.category, filterRegex)}</td>
-            <td>${t.date}</td>
-        `;
+        <td>${highlight(t.description, filterRegex)}</td>
+        <td>${getCurrencySymbol(currency)}${t.amount.toFixed(2)}</td>
+        <td>${highlight(t.category, filterRegex)}</td>
+        <td>${t.date}</td>
+        <td>
+            <button class="edit-btn" data-id="${t.id}">Edit</button>
+            <button class="delete-btn" data-id="${t.id}">Delete</button>
+        </td>
+    `;
 
         tableBody.appendChild(tr);
     });
     updateStats();
+    tableBody.addEventListener("click", (e) => {
+        const id = e.target.dataset.id;
+        if (!id) return;
+    
+        if (e.target.classList.contains("delete-btn")) {
+            const confirmDelete = confirm("Delete this transaction?");
+            if (!confirmDelete) return;
+    
+            const filtered = transactions.filter(t => t.id !== id);
+            setTransactions(filtered);
+            renderTable();
+        }
+    });
 }
 
 form.addEventListener("submit", (e) => {
@@ -174,3 +192,50 @@ document.getElementById("clear-all").addEventListener("click", () => {
     setTransactions([]);
     renderTable();
   });
+
+  tableBody.addEventListener("click", (e) => {
+    const id = e.target.dataset.id;
+    if (!id) return;
+
+    if (e.target.classList.contains("delete-btn")) {
+        const confirmDelete = confirm("Delete this transaction?");
+        if (!confirmDelete) return;
+
+        if (e.target.classList.contains("edit-btn")) {
+            const tx = transactions.find(t => t.id === id);
+            if (!tx) return;
+        
+            form.description.value = tx.description;
+            form.amount.value = tx.amount;
+            form.category.value = tx.category;
+            form.date.value = tx.date;
+        
+            editingId = id; 
+        }
+    }
+
+    if (e.target.classList.contains("edit-btn")) {
+        const tx = transactions.find(t => t.id === id);
+        if (!tx) return;
+
+        form.description.value = tx.description;
+        form.amount.value = tx.amount;
+        form.category.value = tx.category;
+        form.date.value = tx.date;
+
+        const filtered = transactions.filter(t => t.id !== id);
+        setTransactions(filtered);
+        renderTable();
+    }
+});
+const notesArea = document.getElementById("transaction-notes");
+
+const savedNotes = localStorage.getItem("financeTracker:notes");
+if (savedNotes) {
+    notesArea.value = savedNotes;
+}
+
+
+notesArea.addEventListener("input", () => {
+    localStorage.setItem("financeTracker:notes", notesArea.value);
+});
