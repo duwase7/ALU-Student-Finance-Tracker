@@ -205,3 +205,11 @@
     background: #f0f4fa;
     border-left: 4px solid #003366;
   }
+
+  .error {
+    color: red;
+    font-size: 0.85rem;
+    min-height: 18px; /* prevents layout shift */
+    display: block;
+    margin-bottom: 10px;
+  }

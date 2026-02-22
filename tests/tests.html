@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>M3 Validation Tests</title>
+</head>
+<body>
+  <h1>M3 – Regex Validation Tests</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    import {
+      validateDescription,
+      validateAmount,
+      validateCategory,
+      validateDate,
+      hasDuplicateWords
+    } from '../scripts/validators.js';
+
+    const results = document.getElementById("results");
+
+    function assert(name, condition) {
+      const p = document.createElement("p");
+      p.textContent = condition
+        ? `✅ PASS: ${name}`
+        : `❌ FAIL: ${name}`;
+      results.appendChild(p);
+    }
+
+    assert("Valid description", validateDescription("Lunch"));
+    assert("Invalid description (numbers)", !validateDescription("Lunch123"));
+
+    assert("Valid amount", validateAmount("12.50"));
+    assert("Invalid amount (negative)", !validateAmount("-5"));
+
+    assert("Valid category", validateCategory("Food"));
+    assert("Invalid category (numbers)", !validateCategory("Food1"));
+
+    assert("Valid past date", validateDate("2024-01-01"));
+
+    assert(
+      "Detect duplicate words",
+      hasDuplicateWords("coffee coffee")
+    );
+  </script>
+</body>
+</html>
